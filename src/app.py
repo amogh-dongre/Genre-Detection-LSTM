@@ -4,10 +4,10 @@ import numpy as np
 import librosa
 import tensorflow as tf
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 # Load your trained LSTM model
-model = tf.keras.models.load_model('./genre_classifier_lstm.keras')
+model = tf.keras.models.load_model('../model/gtzan_lstm_model.keras')
 
 # Define your genre labels
 genres = ['blues', 'classical', 'country', 'disco', 'hiphop', 
@@ -42,7 +42,7 @@ def extract_features(audio_file, sr=22050, duration=30):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('frontend.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -87,4 +87,4 @@ def predict():
             os.remove(temp_path)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host ='0.0.0.0' , port = 5000 , debug=True)
