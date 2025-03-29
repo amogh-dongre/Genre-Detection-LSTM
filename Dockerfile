@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Copy model file
-COPY gtzan_lstm_model.h5 .
+COPY ./model/gtzan_lstm_model.keras .
 
 # Expose port
 EXPOSE 5000
