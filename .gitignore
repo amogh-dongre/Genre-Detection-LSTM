@@ -1,3 +1,4 @@
 ./misc/ 
 ./data/
 ./.gitignore
+./src/__pycache__/
