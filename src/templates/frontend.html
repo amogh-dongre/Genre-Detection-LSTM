@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Genre Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .result {
+            margin-top: 20px;
+            display: none;
+        }
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        .progress-bar {
+            height: 20px;
+            margin: 5px 0;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Music Genre Classifier</h1>
+        <p>Upload an audio file (WAV, MP3) to classify its genre</p>
+        
+        <form id="upload-form" enctype="multipart/form-data">
+            <input type="file" id="audio-file" name="file" accept=".wav,.mp3,.ogg">
+            <button type="submit">Classify</button>
+        </form>
+        
+        <div id="loader" class="loader"></div>
+        
+        <div id="result" class="result">
+            <h2>Classification Result</h2>
+            <p>Predicted Genre: <strong id="genre"></strong></p>
+            <p>Confidence: <strong id="confidence"></strong></p>
+            
+            <h3>All Probabilities</h3>
+            <div id="probabilities"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('audio-file');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Show loader
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            
+            // Send request
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loader
+                document.getElementById('loader').style.display = 'none';
+                
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
+                
+                // Show result
+                document.getElementById('genre').textContent = data.genre;
+                document.getElementById('confidence').textContent = (data.confidence * 100).toFixed(2) + '%';
+                
+                // Display all probabilities
+                const probContainer = document.getElementById('probabilities');
+                probContainer.innerHTML = '';
+                
+                const genres = Object.keys(data.all_probs).sort();
+                genres.forEach(genre => {
+                    const prob = data.all_probs[genre];
+                    const percentage = (prob * 100).toFixed(2) + '%';
+                    
+                    const label = document.createElement('div');
+                    label.textContent = genre + ': ' + percentage;
+                    
+                    const barContainer = document.createElement('div');
+                    barContainer.className = 'progress-bar';
+                    
+                    const bar = document.createElement('div');
+                    bar.className = 'progress';
+                    bar.style.width = percentage;
+                    bar.textContent = percentage;
+                    
+                    barContainer.appendChild(bar);
+                    probContainer.appendChild(label);
+                    probContainer.appendChild(barContainer);
+                });
+                
+                document.getElementById('result').style.display = 'block';
+            })
+            .catch(error => {
+                document.getElementById('loader').style.display = 'none';
+                alert('Error: ' + error);
+            });
+        });
+    </script>
+</body>
+</html>
