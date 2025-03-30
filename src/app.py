@@ -8,20 +8,6 @@ import tensorflow as tf
 
 app = Flask(__name__, template_folder='templates')
 
-# Load model and genre mapping
-try:
-    model_path = os.environ.get('MODEL_PATH', '../model/genre_classification_fma.keras')
-    model = tf.keras.models.load_model(model_path)
-    
-    # Load updated genre mapping for FMA Medium
-    with open('./genre_mapping.json', 'r') as f:
-        mapping = json.load(f)
-    genres = [mapping[str(i)] for i in range(len(mapping))]
-except Exception as e:
-    print(f"Error loading model: {e}")
-    genres = []
-    model = None
-
 def extract_features(audio_file, sr=22050, duration=30, offset=0):
     """Extract features from an audio file for model prediction"""
     y, sr = librosa.load(audio_file, sr=sr, duration=duration, offset=offset)
@@ -59,6 +45,7 @@ def health():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'})
     
@@ -84,7 +71,7 @@ def predict():
             'confidence': confidence,
             'all_probs': {g: float(p) for g, p in zip(genres, prediction[0])}
         }
-        
+
         return jsonify(result)
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -92,6 +79,21 @@ def predict():
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
+# Load model and genre mapping
+try:
+    model_path = os.environ.get('MODEL_PATH', '../model/genre_classification_fma.keras')
+    model = tf.keras.models.load_model(model_path)
+    
+    # Load updated genre mapping for FMA Medium
+    with open('./genre_mapping.json', 'r') as f:
+        mapping = json.load(f)
+    genres = [mapping[str(i)] for i in range(len(mapping))]
+except Exception as e:
+    print(f"Error loading model: {e}")
+    genres = []
+    model = None
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
