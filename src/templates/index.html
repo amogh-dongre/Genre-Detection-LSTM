@@ -29,35 +29,38 @@
     
     <div class="upload-box">
         <h2>Music Genre Classify</h2>
-        <div class="upload-content">
-            <input type="file" id="audio-upload" accept="audio/mp3">
-            <button class="submit-btn" onclick="uploadFile()">Submit</button>
-        </div>
-        <button class="classify-btn" onclick="classifyMusic()">Classify</button>
+        <form id="upload-form" enctype="multipart/form-data">
+            <div class="upload-content">
+                <input type="file" id="audio-file" name="file" accept="audio/mp3,audio/wav,audio/ogg">
+                <button type="button" class="submit-btn" onclick="uploadFile()">Upload</button>
+            </div>
+            <button type="submit" class="classify-btn">Classify</button>
+        </form>
+        
+        <div id="loader" class="loader" style="display: none;"></div>
     </div>
     
-    
+    <div id="result" class="result" style="display: none;">
+        <h1><u>RESULT</u></h1>
+        <div class="result-content">
+            <h2>Predicted Genre: <strong id="genre"></strong></h2>
+            <p>Confidence: <strong id="confidence"></strong></p>
+            
+            <h3>All Probabilities</h3>
+            <div id="probabilities"></div>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <h2>16-Parameter Radar Chart</h2>
+        <canvas id="radarChart"></canvas>
+    </div>
 
     <div class="music-symbol symbol-1">&#9835;</div>
     <div class="music-symbol symbol-2">&#9835;</div>
     <div class="music-symbol symbol-3">&#9835;</div>
     <div class="music-symbol symbol-4">&#9835;</div>
     <div class="music-symbol symbol-5">&#9835;</div>
-
-    <h1><u>RESULT</u></h1>
-    <br>
-
-
-    <div class="chart-container">
-        <h2>16-Parameter Radar Chart</h2>
-        <canvas id="radarChart"></canvas>
-    </div>
-    
-    <br>
-    <br>
-    <br>
-    <br>
-
 
     <audio id="jazzAudio" src="jazz.mp3"></audio>
 
@@ -94,20 +97,11 @@
                 <li><a href="#">Collaborator</a></li>
               </ul>
             </div>
+          </div>
+        </div>
+    </footer>
     
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    
-    <script>
-        // Image switcher function
-        let images = ["image1.jpg", "image2.jpg", "image3.png"];
-        let index = 0;
-        function switchImage() {
-            document.getElementById("blinking-image").src = images[index];
-            index = (index + 1) % images.length;
-        }
-        setInterval(switchImage, 3000);
-    </script>
 </body>
 </html>

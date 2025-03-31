@@ -1,4 +1,5 @@
-./misc/ 
-./data/
-./.gitignore
-./src/__pycache__/
+misc 
+data
+.gitignore
+src/__pycache__/
+*.log

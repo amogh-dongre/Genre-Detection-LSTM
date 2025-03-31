@@ -49,10 +49,31 @@ def serve_js():
 def serve_css():
     return send_from_directory('./templates/', 'styles.css')
 
-# Serve image files
-@app.route('/<image_file>')
-def serve_image(image_file):
-    return send_from_directory('./templates/', image_file)
+# Serve image files and audio files
+# Add this specific route for images
+@app.route('/templates/image1.jpg')
+def serve_image1(filename):
+    return send_from_directory('./templates/', filename)
+
+@app.route('/templates/image2.jpg')
+def serve_image2(filename):
+    return send_from_directory('./templates/', filename)
+
+@app.route('/templates/image3.png')
+def serve_image3(filename):
+    return send_from_directory('./templates/', filename)
+
+@app.route('/templates/vitaplogo.png')
+def serve_logo(filename):
+    return send_from_directory('./templates/', filename)
+
+@app.route('/templates/jazz.mp3')
+def serve_music(filename):
+    return send_from_directory('./templates/', filename)
+
+
+
+
 
 @app.route('/health')
 def health():
