@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Genre Classifier</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="musiclogo.png">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="#home">Home</a>
+            <a href="#results">Results</a>
+            <a href="#contact">Contact Us</a>
+        </div>
+        <div class="nav-right">
+            <button class="sign-in">Sign In</button>
+        </div>
+    </nav>
+    
+    <div class="image-blinker">
+        <img id="blinking-image" src="image1.jpg" alt="Music Theme">
+    </div>
+    
+    <div class="logo-container">
+        <img src="vitaplogo.png" alt="Music Genre Classifier Logo">
+    </div>
+    
+    <div class="upload-box">
+        <h2>Music Genre Classify</h2>
+        <div class="upload-content">
+            <input type="file" id="audio-upload" accept="audio/mp3">
+            <button class="submit-btn" onclick="uploadFile()">Submit</button>
+        </div>
+        <button class="classify-btn" onclick="classifyMusic()">Classify</button>
+    </div>
+    
+    
+
+    <div class="music-symbol symbol-1">&#9835;</div>
+    <div class="music-symbol symbol-2">&#9835;</div>
+    <div class="music-symbol symbol-3">&#9835;</div>
+    <div class="music-symbol symbol-4">&#9835;</div>
+    <div class="music-symbol symbol-5">&#9835;</div>
+
+    <h1><u>RESULT</u></h1>
+    <br>
+
+
+    <div class="chart-container">
+        <h2>16-Parameter Radar Chart</h2>
+        <canvas id="radarChart"></canvas>
+    </div>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    <audio id="jazzAudio" src="jazz.mp3"></audio>
+
+    <footer>
+        <div class="footer-container">
+          <div class="footer-top">
+            <a href="#top" class="back-to-top">Back to top</a>
+          </div>
+          <div class="footer-links">
+            <div class="footer-column">
+              <h3>Get to Know Us</h3>
+              <hr />
+              <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Vision and Idea</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h3>Connect with Us</h3>
+              <hr />
+              <ul>
+                <li><a href="#">linkedin</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Facebook</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h3>Be our Partner</h3>
+              <hr />
+              <ul>
+                <li><a href="#">Developer</a></li>
+                <li><a href="#">Trainer</a></li>
+                <li><a href="#">Collaborator</a></li>
+              </ul>
+            </div>
+    
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    
+    <script>
+        // Image switcher function
+        let images = ["image1.jpg", "image2.jpg", "image3.png"];
+        let index = 0;
+        function switchImage() {
+            document.getElementById("blinking-image").src = images[index];
+            index = (index + 1) % images.length;
+        }
+        setInterval(switchImage, 3000);
+    </script>
+</body>
+</html>

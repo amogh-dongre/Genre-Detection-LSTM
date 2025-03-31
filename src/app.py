@@ -1,12 +1,14 @@
-
 import os
 import json
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import numpy as np
 import librosa
 import tensorflow as tf
 
-app = Flask(__name__, template_folder='templates')
+# Create Flask app with static folder configuration
+app = Flask(__name__, 
+            template_folder='./templates/', 
+            static_url_path='')  # This allows serving static files from the root directory
 
 def extract_features(audio_file, sr=22050, duration=30, offset=0):
     """Extract features from an audio file for model prediction"""
@@ -37,7 +39,20 @@ def extract_features(audio_file, sr=22050, duration=30, offset=0):
 
 @app.route('/')
 def home():
-    return render_template('frontend.html')
+    return render_template('index.html')
+
+@app.route('/script.js')
+def serve_js():
+    return send_from_directory('./templates/', 'script.js')
+
+@app.route('/styles.css')
+def serve_css():
+    return send_from_directory('./templates/', 'styles.css')
+
+# Serve image files
+@app.route('/<image_file>')
+def serve_image(image_file):
+    return send_from_directory('./templates/', image_file)
 
 @app.route('/health')
 def health():
@@ -45,7 +60,6 @@ def health():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'})
     
@@ -96,4 +110,3 @@ except Exception as e:
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
