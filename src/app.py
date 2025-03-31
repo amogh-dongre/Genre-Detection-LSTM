@@ -6,9 +6,7 @@ import librosa
 import tensorflow as tf
 
 # Create Flask app with static folder configuration
-app = Flask(__name__, 
-            template_folder='./templates/', 
-            static_url_path='')  # This allows serving static files from the root directory
+app = Flask(__name__, static_url_path='/static') 
 
 def extract_features(audio_file, sr=22050, duration=30, offset=0):
     """Extract features from an audio file for model prediction"""
@@ -51,28 +49,10 @@ def serve_css():
 
 # Serve image files and audio files
 # Add this specific route for images
-@app.route('/templates/image1.jpg')
-def serve_image1(filename):
-    return send_from_directory('./templates/', filename)
 
-@app.route('/templates/image2.jpg')
-def serve_image2(filename):
-    return send_from_directory('./templates/', filename)
-
-@app.route('/templates/image3.png')
-def serve_image3(filename):
-    return send_from_directory('./templates/', filename)
-
-@app.route('/templates/vitaplogo.png')
-def serve_logo(filename):
-    return send_from_directory('./templates/', filename)
-
-@app.route('/templates/jazz.mp3')
-def serve_music(filename):
-    return send_from_directory('./templates/', filename)
-
-
-
+@app.route('/static/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('static/images', filename)
 
 
 @app.route('/health')

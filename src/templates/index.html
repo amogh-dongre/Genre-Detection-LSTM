@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Genre Classifier</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="musiclogo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='musiclogo.png') }}">
 </head>
 <body>
     <nav>
@@ -18,15 +18,15 @@
             <button class="sign-in">Sign In</button>
         </div>
     </nav>
-    
+
     <div class="image-blinker">
-        <img id="blinking-image" src="image1.jpg" alt="Music Theme">
+        <img id="blinking-image" src="{{ url_for('static', filename='images/image1.jpg') }}" alt="Music Theme">
     </div>
-    
+
     <div class="logo-container">
-        <img src="vitaplogo.png" alt="Music Genre Classifier Logo">
+        <img src="{{ url_for('static', filename='images/vitaplogo.png') }}" alt="Music Genre Classifier Logo">
     </div>
-    
+
     <div class="upload-box">
         <h2>Music Genre Classify</h2>
         <form id="upload-form" enctype="multipart/form-data">
@@ -36,16 +36,16 @@
             </div>
             <button type="submit" class="classify-btn">Classify</button>
         </form>
-        
+
         <div id="loader" class="loader" style="display: none;"></div>
     </div>
-    
+
     <div id="result" class="result" style="display: none;">
         <h1><u>RESULT</u></h1>
         <div class="result-content">
             <h2>Predicted Genre: <strong id="genre"></strong></h2>
             <p>Confidence: <strong id="confidence"></strong></p>
-            
+
             <h3>All Probabilities</h3>
             <div id="probabilities"></div>
         </div>
@@ -62,46 +62,66 @@
     <div class="music-symbol symbol-4">&#9835;</div>
     <div class="music-symbol symbol-5">&#9835;</div>
 
-    <audio id="jazzAudio" src="jazz.mp3"></audio>
+    <audio id="jazzAudio" src="{{ url_for('static', filename='audio/jazz.mp3') }}"></audio>
 
     <footer>
         <div class="footer-container">
-          <div class="footer-top">
-            <a href="#top" class="back-to-top">Back to top</a>
-          </div>
-          <div class="footer-links">
-            <div class="footer-column">
-              <h3>Get to Know Us</h3>
-              <hr />
-              <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Vision and Idea</a></li>
-              </ul>
+            <div class="footer-top">
+                <a href="#top" class="back-to-top">Back to top</a>
             </div>
-            <div class="footer-column">
-              <h3>Connect with Us</h3>
-              <hr />
-              <ul>
-                <li><a href="#">linkedin</a></li>
-                <li><a href="#">Instagram</a></li>
-                <li><a href="#">Facebook</a></li>
-              </ul>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Get to Know Us</h3>
+                    <hr />
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Vision and Idea</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect with Us</h3>
+                    <hr />
+                    <ul>
+                        <li><a href="#">linkedin</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Be our Partner</h3>
+                    <hr />
+                    <ul>
+                        <li><a href="#">Developer</a></li>
+                        <li><a href="#">Trainer</a></li>
+                        <li><a href="#">Collaborator</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-column">
-              <h3>Be our Partner</h3>
-              <hr />
-              <ul>
-                <li><a href="#">Developer</a></li>
-                <li><a href="#">Trainer</a></li>
-                <li><a href="#">Collaborator</a></li>
-              </ul>
-            </div>
-          </div>
         </div>
     </footer>
+
+    <script>
+      // Pass image URLs from Flask/Jinja2 to JavaScript
+      const imageUrls = [
+          "{{ url_for('static', filename='images/image1.jpg') }}",
+          "{{ url_for('static', filename='images/image2.jpg') }}",
+          "{{ url_for('static', filename='images/image3.png') }}"
+      ];
+
+      let index = 0;
+    function switchImage() {
+        const imgElement = document.getElementById("blinking-image");
+        if (imgElement) {
+            imgElement.src = imageUrls[index]; // Use the URLs from the array
+            index = (index + 1) % imageUrls.length;
+        }
+    }
+    setInterval(switchImage, 3000);
     
-    <script src="script.js"></script>
+  </script>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
