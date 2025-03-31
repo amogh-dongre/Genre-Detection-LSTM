@@ -3,3 +3,5 @@ data
 .gitignore
 src/__pycache__/
 *.log
+*.png
+
