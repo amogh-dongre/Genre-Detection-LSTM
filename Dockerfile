@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.12.9-slim
 
 WORKDIR /app
 
@@ -16,10 +16,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Copy model file
-COPY ./model/gtzan_lstm_model.keras .
+COPY ./model/genre_classification_fma.keras .
 
 # Expose port
 EXPOSE 5000
 
 # Command to run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["python", "src/app.py", "0.0.0.0:5000", "app:app"]

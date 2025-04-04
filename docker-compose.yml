@@ -3,13 +3,13 @@ version: '3.8'
 services:
   web:
     build: .
-    image: gtzan-classifier:latest
-    container_name: gtzan-classifier
+    image: fma-classifier:latest
+    container_name: fma-classifier
     restart: unless-stopped
     ports:
       - "5000:5000"
     volumes:
-      - ./models:/app/models
+      - ./models:/app/model
       - ./logs:/app/logs
     environment:
       - FLASK_ENV=production
@@ -17,15 +17,15 @@ services:
       - GUNICORN_WORKERS=2
       - GUNICORN_THREADS=4
       - MAX_CONTENT_LENGTH=16777216  # 16MB max upload size
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
 
   nginx:
     image: nginx:alpine
-    container_name: gtzan-nginx
+    container_name: fma-nginx
     restart: unless-stopped
     ports:
       - "80:80"
